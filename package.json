@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "seed": "node models/seeds/userSeeder.js"
+    "seed": "node models/seeds/watchlistSeeder.js & node models/seeds/userSeeder.js" 
   },
   "keywords": [],
   "author": "",
