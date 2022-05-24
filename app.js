@@ -1,8 +1,10 @@
 const express = require('express')
+const route = require('./routes/index')
 const mongoose = require('mongoose')
 
 const app = express()
 const port = 3000
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -18,9 +20,8 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-app.get('/', (req, res) => {
-  res.send('this is a backend side project')
-})
+
+app.use(route)
 
 app.listen(port, () => {
   console.log(`App is running on localhost:${port}`)
