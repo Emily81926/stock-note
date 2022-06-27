@@ -68,6 +68,25 @@ const getProfile = async (symbol, i) => {
   return stockInfo[i]
 }
 
+//取得搜尋股票的資訊
+const getStockSearched = async (keyword) => {
+  const searchApi = `https://financialmodelingprep.com/api/v3/search?query=${keyword}&limit=10&exchange=NASDAQ&apikey=${process.env.STOCK_API}`
+  const rawSearchData = await axios.get(searchApi)
+  const searchData = rawSearchData.data
+  return searchData
+}
+
+//取得object的長度
+const getObjectLength = async (object) => {
+  let length0fObject = 0;
+  for (let key in object) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (object.hasOwnProperty(key)) {
+      length0fObject++;
+    }
+  }
+  return length0fObject
+}
 
 
 
@@ -126,6 +145,26 @@ exports.getStockProfile = async (req, res) => {
     const { symbol, companyName, price, exchangeShortName, sector, industry, website, description, image } = await getProfile(stockSymbol, 0)
 
     await res.send({ symbol, companyName, price, exchangeShortName, sector, industry, website, description, image })
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//取得搜尋股票的資訊
+exports.searchStock = async (req, res) => {
+  try {
+    const keyword = req.query.keyword
+    const searchedData = await getStockSearched(keyword)
+    const length = await getObjectLength(searchedData)
+    const finalData = []
+    for (let i = 0; i < length; i++) {
+      const company = searchedData[i]["symbol"]
+      const { symbol, companyName, price, exchangeShortName, sector, industry, image } = await getProfile(company, 0)
+      finalData.push({ symbol, companyName, price, exchangeShortName, sector, industry, image })
+    }
+
+    await res.send(finalData)
 
   } catch (error) {
     console.log(error)
