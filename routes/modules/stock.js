@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  res.send('this is a backend side project')
-})
+const stockController = require('../../controllers/stockController')
+
+router.get('/', stockController.getStocks)
+
 
 module.exports = router

@@ -3,6 +3,6 @@ const router = express.Router()
 
 const stock = require('./modules/stock')
 
-router.use('/stocks', stock)
+router.use('/api/stocks', stock)
 
 module.exports = router
