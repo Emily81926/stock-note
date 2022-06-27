@@ -19,6 +19,38 @@ const getImage = async (symbol) => {
   return image
 }
 
+//取得free cash flow資訊
+const getFreeCashFlow = async (symbol, i) => {
+  const cashFlowApi = `https://financialmodelingprep.com/api/v3/cash-flow-statement/${symbol}?limit=120&apikey=${process.env.STOCK_API}`
+  const rawCashData = await axios.get(cashFlowApi)
+  const cashData = rawCashData.data
+  const { freeCashFlow } = cashData[i]
+  return freeCashFlow
+}
+
+//取得dividends資訊 
+const getDividends = async (symbol, i) => {
+  const dividendsApi = `https://financialmodelingprep.com/api/v3/financial-statement-full-as-reported/${symbol}?apikey=${process.env.STOCK_API}`
+  const rawDividendsData = await axios.get(dividendsApi)
+  const dividendsData = rawDividendsData.data
+  const { earningspersharediluted } = dividendsData[i]
+  return earningspersharediluted
+}
+//取得earning per share 資訊
+const getEPS = async (symbol, i) => {
+  const epsApi = `https://financialmodelingprep.com/api/v3/income-statement-as-reported/${symbol}?limit=10&apikey=${process.env.STOCK_API}`
+  const rawEPSData = await axios.get(epsApi)
+  const epsData = rawEPSData.data
+  const { earningspersharediluted } = epsData[i]
+  return earningspersharediluted
+}
+//取得return on equity, interest coverage, netmargin資訊
+const getROE = async (symbol, i) => {
+  const roeApi = `https://financialmodelingprep.com/api/v3/ratios/${symbol}?limit=40&apikey=${process.env.STOCK_API}`
+  const rawROEData = await axios.get(roeApi)
+  const roeData = rawROEData.data
+  return roeData[i]
+}
 
 //取得所有股票的資訊
 exports.getStocks = async (req, res) => {
@@ -38,3 +70,21 @@ exports.getStocks = async (req, res) => {
   }
 }
 
+//取得股票的金融資訊
+exports.getFinancialData = async (req, res) => {
+  try {
+    const stockSymbol = req.params.stock
+    const finalData = []
+    for (let i = 0; i < 2; i++) {
+      const { symbol, date, netProfitMargin, returnOnEquity, interestCoverage } = await getROE(stockSymbol, i)
+      const freeCashFlow = await getFreeCashFlow(stockSymbol, i)
+      const earningPerShares = await getEPS(stockSymbol, i)
+      const dividends = await getDividends(stockSymbol, i)
+      finalData.push({ symbol, date, netProfitMargin, returnOnEquity, interestCoverage, freeCashFlow, earningPerShares, dividends })
+    }
+
+    await res.send(finalData)
+  } catch (error) {
+    console.log(error)
+  }
+}
