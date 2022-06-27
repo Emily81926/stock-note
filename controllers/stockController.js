@@ -53,11 +53,11 @@ const getROE = async (symbol, i) => {
 }
 
 //取得股票的indicator data（股票圖）
-const getDailyIndicator = async (symbol, i) => {
+const getDailyIndicator = async (symbol) => {
   const indicatorApi = `https://financialmodelingprep.com/api/v3/technical_indicator/daily/${symbol}?period=10&type=ema&apikey=${process.env.STOCK_API}`
   const rawIndicatorData = await axios.get(indicatorApi)
   const indicatorData = rawIndicatorData.data
-  return indicatorData[i]
+  return indicatorData
 }
 
 //取得股票基本資訊
