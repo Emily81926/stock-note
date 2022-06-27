@@ -52,6 +52,16 @@ const getROE = async (symbol, i) => {
   return roeData[i]
 }
 
+//取得股票的indicator data（股票圖）
+const getDailyIndicator = async (symbol, i) => {
+  const indicatorApi = `https://financialmodelingprep.com/api/v3/technical_indicator/daily/${symbol}?period=10&type=ema&apikey=${process.env.STOCK_API}`
+  const rawIndicatorData = await axios.get(indicatorApi)
+  const indicatorData = rawIndicatorData.data
+  return indicatorData[i]
+}
+
+
+
 //取得所有股票的資訊
 exports.getStocks = async (req, res) => {
   try {
@@ -84,6 +94,17 @@ exports.getFinancialData = async (req, res) => {
     }
 
     await res.send(finalData)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//取得股票圖
+exports.getIndicator = async (req, res) => {
+  try {
+    const stockSymbol = req.params.stock
+    const indicatorData = await getDailyIndicator(stockSymbol)
+    await res.send(indicatorData)
   } catch (error) {
     console.log(error)
   }
