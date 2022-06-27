@@ -4,6 +4,7 @@ const router = express.Router()
 const stockController = require('../../controllers/stockController')
 
 router.get('/', stockController.getStocks)
+router.get('/:stock', stockController.getStockProfile)
 router.get('/finance/:stock', stockController.getFinancialData)
 router.get('/indicator/:stock', stockController.getIndicator)
 

@@ -60,6 +60,15 @@ const getDailyIndicator = async (symbol, i) => {
   return indicatorData[i]
 }
 
+//取得股票基本資訊
+const getProfile = async (symbol, i) => {
+  const stockApi = `https://financialmodelingprep.com/api/v3/profile/${symbol}?apikey=${process.env.STOCK_API}`
+  const rawStockInfo = await axios.get(stockApi)
+  const stockInfo = rawStockInfo.data
+  return stockInfo[i]
+}
+
+
 
 
 //取得所有股票的資訊
@@ -105,6 +114,19 @@ exports.getIndicator = async (req, res) => {
     const stockSymbol = req.params.stock
     const indicatorData = await getDailyIndicator(stockSymbol)
     await res.send(indicatorData)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//取得單一股票的基本資訊
+exports.getStockProfile = async (req, res) => {
+  try {
+    const stockSymbol = req.params.stock
+    const { symbol, companyName, price, exchangeShortName, sector, industry, website, description, image } = await getProfile(stockSymbol, 0)
+
+    await res.send({ symbol, companyName, price, exchangeShortName, sector, industry, website, description, image })
+
   } catch (error) {
     console.log(error)
   }
