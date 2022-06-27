@@ -75,7 +75,7 @@ exports.getFinancialData = async (req, res) => {
   try {
     const stockSymbol = req.params.stock
     const finalData = []
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 5; i++) {
       const { symbol, date, netProfitMargin, returnOnEquity, interestCoverage } = await getROE(stockSymbol, i)
       const freeCashFlow = await getFreeCashFlow(stockSymbol, i)
       const earningPerShares = await getEPS(stockSymbol, i)
