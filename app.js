@@ -1,9 +1,12 @@
 const express = require('express')
-const route = require('./routes/index')
+const routes = require('./routes/index')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 
 const app = express()
 const port = 3000
+
+
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -20,8 +23,10 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+app.use(bodyParser.json()) //要在route上面
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(routes)
 
-app.use(route)
 
 app.listen(port, () => {
   console.log(`App is running on localhost:${port}`)

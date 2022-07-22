@@ -5,7 +5,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  account:{
+  email:{
     type: String,
     required: true
   },
@@ -13,8 +13,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  confirmPassword:{
-    type: String
+  confirmedPassword:{
+    type: String,
   }
 })
 

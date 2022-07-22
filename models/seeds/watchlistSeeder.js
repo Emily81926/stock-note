@@ -16,14 +16,12 @@ db.once('open', () => {
   console.log('mongodb connected!')
   Watchlist.create({
     symbol: "AAPL",
-    calendarYear: "2022",
-    stockPrice: "160",
-    earningsPerShare: "0.5",
-    freeCashFlow: "3600000",
-    returnOnEquity: "0.4",
-    interestCoverage: "40",
-    netMargin: "15",
-    dividendsPayingCompany: "16"
+    companyName: "Apple Inc.",
+    price: 141.7614,
+    sector: "Technology",
+    industry: "Consumer Electronics",
+    exchangeShortName: "NASDAQ",
+    image: "https://financialmodelingprep.com/image-stock/AAPL.png"
   })
   console.log('done')
 })

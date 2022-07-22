@@ -16,12 +16,12 @@ db.once('open', () => {
   console.log('mongodb connected!')
   User.create({
     name: "test1", 
-    account: "test1",
-    password: "12345678" 
+    email: "test1@gmail.com",
+    password: "12345678" ,
 },
     {
       name: "test2",
-      account: "test2",
+      email: "test2@gmail.com",
       password: "12345678"
 })
   console.log('done')

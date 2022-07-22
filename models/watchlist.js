@@ -5,31 +5,29 @@ const watchlistSchema = new Schema({
     type: String,
     required: true
   },
-  calendarYear: {
+  companyName: {
     type: String,
     required: true
   },
-  stockPrice: {
+  price: {
+    type: Number,
+    required: true
+  },
+  sector: {
     type: String,
     required: true
   },
-  earningsPerShare: {
-    type: String
+  industry: {
+    type: String,
+    required: true
   },
-  freeCashFlow: {
-    type: String
+  exchangeShortName: {
+    type: String,
+    required: true
   },
-  returnOnEquity: {
-    type: String
-  },
-  interestCoverage: {
-    type: String
-  },
-  netMargin: {
-    type: String
-  },
-  dividendsPayingCompany: {
-    type: String
+  image: {
+    type: String,
+    required: true
   }
 })
 
