@@ -7,7 +7,7 @@ const app = express()
 const port = 3000
 const cors = require('cors')
 const session = require('express-session')
-const userPassport = require('./config/passport')
+const usePassport = require('./config/passport')
 app.use(cors())
 app.use(session({
   secret: 'ThisIsMySecret',
@@ -33,7 +33,7 @@ db.once('open', () => {
 
 app.use(bodyParser.json()) //要在route上面
 app.use(bodyParser.urlencoded({ extended: true }))
-userPassport(app)
+usePassport(app)
 app.use(routes)
 
 
