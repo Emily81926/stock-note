@@ -13,4 +13,14 @@ exports.signUp = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
+},
+
+exports.signIn= async(req, res) => {
+  try{
+    res.send('this is signin function')
+  }catch(error){
+    console.log(error)
+  }
 }
+
+

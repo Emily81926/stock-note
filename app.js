@@ -6,8 +6,13 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 const cors = require('cors')
+const session = require('express-session')
 app.use(cors())
-
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true,
+}))
 
 
 if (process.env.NODE_ENV !== 'production') {
