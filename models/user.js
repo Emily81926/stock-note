@@ -7,6 +7,7 @@ const userSchema = new Schema({
   },
   email:{
     type: String,
+    unique: true,
     required: true
   },
   password:{
@@ -14,6 +15,9 @@ const userSchema = new Schema({
     required: true
   },
   confirmedPassword:{
+    type: String,
+  },
+  token:{
     type: String,
   }
 })

@@ -7,18 +7,21 @@ const app = express()
 const port = 3000
 const cors = require('cors')
 const session = require('express-session')
-const usePassport = require('./config/passport')
+const passport = require('./config/passport')
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 app.use(cors())
 app.use(session({
   secret: 'ThisIsMySecret',
   resave: false,
   saveUninitialized: true,
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
@@ -33,7 +36,6 @@ db.once('open', () => {
 
 app.use(bodyParser.json()) //要在route上面
 app.use(bodyParser.urlencoded({ extended: true }))
-usePassport(app)
 app.use(routes)
 
 
