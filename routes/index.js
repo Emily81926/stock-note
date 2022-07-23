@@ -3,10 +3,12 @@ const router = express.Router()
 
 const stock = require('./modules/stock')
 const user = require('./modules/user')
-const auth = require('../middleware/auth')
+const auth = require('./modules/auth')
+const authenticator = require('../middleware/auth')
 
+router.use('/auth/google', auth)
 router.use('/api/user', user)
-router.use('/api/stocks', auth, stock)
+router.use('/api/stocks', authenticator, stock)
 
 
 

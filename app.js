@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 const app = express()
-const port = 3000
+const port = 3001
 const cors = require('cors')
 const session = require('express-session')
 const passport = require('./config/passport')
