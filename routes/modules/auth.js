@@ -24,7 +24,7 @@ router.get('/login/failure', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  req.redirect('http://localhost:3000')
+  res.redirect('http://localhost:3000')
 })
 
 router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
