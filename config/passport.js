@@ -1,8 +1,10 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
-const GoogleStrategy = require('passport-google-oauth20')
-const bcrypt = require('bcryptjs')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
 
 
 passport.use(new LocalStrategy(
@@ -28,24 +30,47 @@ passport.use(new LocalStrategy(
       })
   }))
 
+  //origin google strategy
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
-}, function (accessToken, refreshToken, profile, done) {
-  done(null, profile)
+  callbackURL: "/auth/google/callback",
+  passReqToCallback: true
+}, async function (req, accessToken, refreshToken, profile, callback) {
+  console.log('google strategy')
+  console.log(profile._json)
+  //看是否信箱已註冊過，有註冊過就直接回傳原本的資料
+  const { email, name } = profile._json
+  const oldUser = await User.findOne({ email })
+  if (oldUser) {
+    console.log("find old user!!")
+    return callback(null, profile._json)}
+  //沒有的話，就新註冊
+  const token = jwt.sign(
+    { email },
+    process.env.JWT_SECRET,
+    { expiresIn: '2h' })
+  const randomPassword = Math.random().toString(36).slice(-8)
+  const hash = await bcrypt.hash(randomPassword, 10);
+
+  await User.create({
+    name, email: email.toLowerCase(), password: hash, token
+  })
+  req.user = profile._json
+  return callback(null, profile._json)
 }
 ))
 
 
+
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+  done(null, user)
+  console.log('passport serializeUser')
 })
-passport.deserializeUser((id, callback) => {
-  User.findById(id)
-    .lean()
-    .then(user => callback(null, user))
-    .then(error => callback(error, null))
+
+passport.deserializeUser((user, done) => {
+  console.log('passport deserializeUser', user)
+  done(null, user)
 })
 
 
