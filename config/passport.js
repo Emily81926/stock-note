@@ -44,7 +44,7 @@ passport.use(new GoogleStrategy({
   const oldUser = await User.findOne({ email })
   if (oldUser) {
     console.log("find old user!!")
-    return callback(null, profile._json)}
+    return callback(null, oldUser)}
   //沒有的話，就新註冊
   const token = jwt.sign(
     { email },
@@ -56,8 +56,10 @@ passport.use(new GoogleStrategy({
   await User.create({
     name, email: email.toLowerCase(), password: hash, token
   })
-  req.user = profile._json
-  return callback(null, profile._json)
+  //req.user = profile._json
+  req.user = {name, email, token}
+
+  return callback(null, { name, email, token })
 }
 ))
 
