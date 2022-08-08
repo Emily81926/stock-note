@@ -89,7 +89,18 @@ exports.refreshToken = async (req, res) => {
       accessToken
     })
   })
-
 }
+
+exports.logOut = async (req, res) => {
+  const refreshToken = req.body.token
+  if (!refreshToken) return res.status(204).json('you have already logged out!')
+
+  const foundUser = await User.findOne({ refreshToken })
+  if (foundUser) { 
+    foundUser.refreshToken = ''
+    await foundUser.save()
+    return res.status(200).json('you log out successfully!') }
+}
+
 
 
