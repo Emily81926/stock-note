@@ -3,7 +3,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
 const generateAccessToken = (user) => {
-  return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '5s' })
+  return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2m' })
 }
 
 const generateRefreshToken = (user) => {
@@ -15,16 +15,16 @@ exports.signUp = async (req, res) => {
   try {
     const { name, email, password, confirmedPassword } = req.body
     if (!(name || email || password || confirmedPassword)) {
-       return res.status(400).send("All input is required!")
-     }
+      return res.status(400).send("All input is required!")
+    }
 
-     const oldUser = await User.findOne({ email });
-     if(oldUser){
-       return res.send(409).send("User already exist. Please login.")
-     }
+    const oldUser = await User.findOne({ email });
+    if (oldUser) {
+      return res.send(409).send("User already exist. Please login.")
+    }
 
     const hash = await bcrypt.hash(password, 10);
-    
+
 
     const user = await User.create({
       name, email: email.toLowerCase(), password: hash, refreshToken: ''
@@ -57,7 +57,7 @@ exports.signUp = async (req, res) => {
         await user.save()
 
         return res.status(200).json({
-          user: user.name, 
+          user: user.name,
           email: user.email,
           accessToken: accessToken
         });
@@ -70,5 +70,26 @@ exports.signUp = async (req, res) => {
       next(error)
     }
   }
+
+exports.refreshToken = async (req, res) => {
+  //拿到refresh token
+  const refreshToken = req.body.token
+  if (!refreshToken) return res.status(401).json('you are not authenticated!')
+  //在db裡面找相同的refreshToken
+  const foundUser = await User.findOne({ refreshToken })
+  if (!foundUser) return res.status(403).json('refresh token is not valid!')
+
+  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    const accessToken = generateAccessToken(user)
+
+    res.json({
+      name: foundUser.name,
+      email: foundUser.email,
+      accessToken
+    })
+  })
+
+}
 
 
