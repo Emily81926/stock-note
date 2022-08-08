@@ -20,10 +20,10 @@ db.once('open', () => {
     .genSalt(10)
     .then(salt => bcrypt.hash(password, salt))
     .then(hash => User.create({
-      name: "test2",
-      email: "test2@email.com",
+      name: "test1",
+      email: "test1@email.com",
       password: hash,
-      token: ""
+      refreshToken: ""
 
     }))
   console.log('done')

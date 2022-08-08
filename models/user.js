@@ -17,7 +17,7 @@ const userSchema = new Schema({
   confirmedPassword:{
     type: String,
   },
-  token:{
+  refreshToken:{
     type: String,
   }
 })
