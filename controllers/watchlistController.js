@@ -19,6 +19,10 @@ exports.getWatchlist = async(req, res) => {
   return res.status(200).json({list})
 }
 
-exports.deleteWatchlist = async(req, res) => {
 
+exports.deleteWatchlist = async(req, res) => {
+  const { watchListId } = req.body
+  await watchList.findByIdAndDelete(watchListId)
+
+return res.status(200).json('successfully deleted from watchlist!')
 }
