@@ -17,15 +17,7 @@ const watchlistSchema = new Schema({
     type: String,
     required: true
   },
-  industry: {
-    type: String,
-    required: true
-  },
-  exchangeShortName: {
-    type: String,
-    required: true
-  },
-  image: {
+  userId: {
     type: String,
     required: true
   }

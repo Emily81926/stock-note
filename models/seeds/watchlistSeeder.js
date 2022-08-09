@@ -19,9 +19,7 @@ db.once('open', () => {
     companyName: "Apple Inc.",
     price: 141.7614,
     sector: "Technology",
-    industry: "Consumer Electronics",
-    exchangeShortName: "NASDAQ",
-    image: "https://financialmodelingprep.com/image-stock/AAPL.png"
+    userId: '01'
   })
   console.log('done')
 })
