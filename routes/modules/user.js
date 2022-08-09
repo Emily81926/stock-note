@@ -8,6 +8,7 @@ const authenticator = require('../../middleware/auth')
 router.post('/signup', userController.signUp)
 router.post('/signin', userController.signIn)
 router.post('/refreshToken', userController.refreshToken)
+router.get('/currentUser',authenticator ,userController.getCurrentUser)
 router.post('/logout', authenticator, userController.logOut)
 
 module.exports = router

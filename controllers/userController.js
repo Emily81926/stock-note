@@ -3,7 +3,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
 const generateAccessToken = (user) => {
-  return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '2m' })
+  return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '15m' })
 }
 
 const generateRefreshToken = (user) => {
@@ -56,10 +56,12 @@ exports.signUp = async (req, res) => {
         user.refreshToken = refreshToken
         await user.save()
 
+        // res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
         return res.status(200).json({
-          user: user.name,
+          name: user.name,
           email: user.email,
-          accessToken: accessToken
+          accessToken: accessToken,
+          refreshToken
         });
       }
 
@@ -86,9 +88,17 @@ exports.refreshToken = async (req, res) => {
     res.json({
       name: foundUser.name,
       email: foundUser.email,
-      accessToken
+      accessToken,
+      refreshToken
     })
   })
+}
+
+exports.getCurrentUser = async(req, res) => {
+  if (!req.user) return res.status(400).json('please log in first!')
+  const userId = req.user.user_id
+  const data = await User.findOne({ userId })
+  return res.status(200).json({user: data})
 }
 
 exports.logOut = async (req, res) => {
@@ -96,10 +106,11 @@ exports.logOut = async (req, res) => {
   if (!refreshToken) return res.status(204).json('you have already logged out!')
 
   const foundUser = await User.findOne({ refreshToken })
-  if (foundUser) { 
+  if (foundUser) {
     foundUser.refreshToken = ''
     await foundUser.save()
-    return res.status(200).json('you log out successfully!') }
+    return res.status(200).json('you log out successfully!')
+  }
 }
 
 
