@@ -98,7 +98,7 @@ exports.getCurrentUser = async(req, res) => {
   if (!req.user) return res.status(400).json('please log in first!')
   const userId = req.user.user_id
   const data = await User.findOne({ userId })
-  return res.status(200).json({user: data})
+  return res.status(200).json(data)
 }
 
 exports.logOut = async (req, res) => {
