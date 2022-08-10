@@ -3,6 +3,9 @@ const watchList = require('../models/watchlist')
 exports.postWatchlist = async (req, res) => {
   try {
     const { symbol, companyName, sector, price, userId } = req.body
+    const foundList = await watchList.findOne({ symbol })
+    if (foundList) return res.status(400).json('already added to watchlist!');
+    
     await watchList.create({
       symbol, companyName, sector, price, userId
     })
