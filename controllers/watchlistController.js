@@ -5,11 +5,14 @@ exports.postWatchlist = async (req, res) => {
     const { symbol, companyName, sector, price, userId } = req.body
     const foundList = await watchList.findOne({ symbol })
     if (foundList) return res.status(400).json('already added to watchlist!');
-    
-    await watchList.create({
+
+    // await watchList.create({
+    //   symbol, companyName, sector, price, userId
+    // })
+    const newList = await watchList.create({
       symbol, companyName, sector, price, userId
     })
-    return res.status(200).json('successfully added to watchlist!');
+    return res.status(200).json({ message: 'successfully added to watchlist!', list: newList });
   } catch (error) {
     console.log(error)
   }
