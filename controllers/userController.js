@@ -15,12 +15,12 @@ exports.signUp = async (req, res) => {
   try {
     const { name, email, password, confirmedPassword } = req.body
     if (!(name || email || password || confirmedPassword)) {
-      return res.status(400).send("All input is required!")
+      return res.status(400).json("All input is required!")
     }
 
     const oldUser = await User.findOne({ email });
     if (oldUser) {
-      return res.send(409).send("User already exist. Please login.")
+      return res.send(409).json("User already exist. Please login.")
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -43,7 +43,7 @@ exports.signUp = async (req, res) => {
     try {
       const { email, password } = req.body
       if (!(email && password)) {
-        return res.status(400).send("All input is required")
+        return res.status(400).json("All input is required")
       }
 
       const user = await User.findOne({ email })
@@ -65,7 +65,7 @@ exports.signUp = async (req, res) => {
         });
       }
 
-      return res.status(400).send("Invalid Credentials")
+      return res.status(400).json("Invalid Credentials")
 
     }
     catch (error) {
@@ -95,6 +95,7 @@ exports.refreshToken = async (req, res) => {
 }
 
 exports.getCurrentUser = async(req, res) => {
+  console.log(req.user)
   if (!req.user) return res.status(400).json('please log in first!')
   const userId = req.user.user_id
   const data = await User.findOne({ userId })
