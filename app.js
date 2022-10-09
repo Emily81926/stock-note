@@ -46,6 +46,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(routes)
 
 
-app.listen(port,"0.0.0.0" ,() => {
+app.listen(port,() => {
   console.log(`App is running on localhost:${port}`)
 })
