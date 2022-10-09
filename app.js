@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: 'http://localhost:3000',
   methods: 'GET, POST, PUT, DELETE',
   credentials: true, 
 }))
