@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 const app = express()
-const port = 3001
+const port = process.env.PORT || 3001
 const cors = require('cors')
 const session = require('express-session')
 const passport = require('./config/passport')
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:8080',
   methods: 'GET, POST, PUT, DELETE',
   credentials: true, 
 }))
@@ -46,6 +46,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(routes)
 
 
-app.listen(port, () => {
+app.listen(port,"0.0.0.0" ,() => {
   console.log(`App is running on localhost:${port}`)
 })
