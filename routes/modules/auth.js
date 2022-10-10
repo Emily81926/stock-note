@@ -27,7 +27,7 @@ router.get('/login/failure', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('http://localhost:3000')
+  res.redirect('https://sprightly-melba-edee81.netlify.app')
 })
 
 router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
@@ -40,7 +40,7 @@ router.get('/google', passport.authenticate('google', { scope: ['email', 'profil
 // ))
 
 router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: 'http://localhost:3000',
+  successRedirect: 'https://sprightly-melba-edee81.netlify.app',
   failureRedirect: "/login/failure"
 })
 //  function (req, res) {
