@@ -95,10 +95,9 @@ exports.refreshToken = async (req, res) => {
 }
 
 exports.getCurrentUser = async(req, res) => {
-  console.log(req.user)
   if (!req.user) return res.status(400).json('please log in first!')
-  const userId = req.user.user_id
-  const data = await User.findOne({ userId })
+  const email = req.user.email
+  const data = await User.findOne({email})
   return res.status(200).json(data)
 }
 
