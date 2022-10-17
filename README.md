@@ -27,13 +27,7 @@ npm run seed
 npm run dev
 ```
 
-## Test Accounaia user account： test1@m.com  
-* admin account： admin@example.com  
+## Test Account 
+* user account： test1@email.com  
   user password： 12345678
-* user account： test3@example.com  
-  user password： 12345678  
 
-## Test Credit Card
-* Card Number: 4242 4242 4242 4242
-* CVV Code: 222
-* Exp. Date: 5/29
