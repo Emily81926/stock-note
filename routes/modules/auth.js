@@ -33,8 +33,8 @@ router.get('/google', passport.authenticate('google', { scope: ['email', 'profil
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "https://stock-note-bosva.netlify.app",
-    failureRedirect: "/login/failure",
+    successRedirect: 'https://sprightly-melba-edee81.netlify.app',
+    failureRedirect: '/login/failure'
   })
 );
 
