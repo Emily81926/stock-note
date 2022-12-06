@@ -7,18 +7,12 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const port = process.env.PORT || 3001
 const cors = require('cors')
-const session = require('express-session')
 const passport = require('./config/passport')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 app.use(cors())
-app.use(session({
-  secret: 'ThisIsMySecret',
-  resave: false,
-  saveUninitialized: true,
-}))
 app.use(bodyParser.json()) //要在route上面
 app.use(cookieParser())
 app.use(passport.initialize())
