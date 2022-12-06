@@ -2,7 +2,7 @@
 The project is to provide API for [stock-note-client project](https://github.com/Emily81926/stock-note-client).
 
 ## Live DEMO
-Please click [here](https://stock-note-bosva.netlify.app/) to go to DEMO website.
+Please click [here](https://sprightly-melba-edee81.netlify.app/) to go to DEMO website.
 
 ## Usage
 1. Download project to local
