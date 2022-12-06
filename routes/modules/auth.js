@@ -8,12 +8,9 @@ const generateAccessToken = (user) => {
 }
 
 router.get('/login/success', (req, res) => {
-  console.log('google login success')
-   console.log(req.user)
   if (req.user) {
     const accessToken = generateAccessToken(req.user)
     const user = Object.assign(req.user, {accessToken})
-    console.log('回傳的user:',user)
     res.status(200).json({ user })
   }
 
@@ -32,23 +29,14 @@ router.get('/logout', (req, res) => {
 
 router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
 
-// //original google callback auth
-// router.get('/google/callback', passport.authenticate('google', {
-//   successRedirect: 'http://localhost:3000',
-//   failureRedirect: "/login/failure"
-// }
-// ))
 
-router.get('/google/callback', passport.authenticate('google', {
-  successRedirect: 'https://sprightly-melba-edee81.netlify.app',
-  failureRedirect: "/login/failure"
-})
-//  function (req, res) {
-//   res.redirect('/login/success')
-// }
-)
-
-
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "https://stock-note-bosva.netlify.app",
+    failureRedirect: "/login/failure",
+  })
+);
 
 
 
