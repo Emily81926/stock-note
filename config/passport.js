@@ -1,5 +1,4 @@
 const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
@@ -13,29 +12,6 @@ const generateRefreshToken = (user) => {
   return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '1d' })
 }
 
-
-passport.use(new LocalStrategy(
-  {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
-  },
-  (email, password, callback) => {
-    User.findOne({ email })
-      .then(user => {
-        if (!user) {
-          return callback(null, false, { message: 'That email is not registered!' })
-        }
-        return bcrypt.compare(password, user.password)
-          .then(isMatch => {
-            if (!isMatch) {
-              return callback(null, false, { message: 'Email or Password incorrect!' })
-            }
-
-            return callback(null, user)
-          })
-      })
-  }))
 
 //origin google strategy
 passport.use(new GoogleStrategy({
@@ -71,7 +47,7 @@ passport.use(new GoogleStrategy({
   const newAccessToken = jwt.sign(
     { email },
     process.env.JWT_SECRET,
-    { expiresIn: '15m' })
+    { expiresIn: '5m' })
 
   const newRefreshToken = jwt.sign(
     { email },
