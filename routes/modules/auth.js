@@ -1,43 +1,38 @@
-const express = require('express')
-const router = express.Router()
-const passport = require('passport')
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
 
-const generateAccessToken = (user) => {
-  return jwt.sign({ user_id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '15m' })
-}
 
-router.get('/login/success', (req, res) => {
+
+router.get("/login/success", (req, res) => {
   if (req.user) {
-    const accessToken = generateAccessToken(req.user)
-    const user = Object.assign(req.user, {accessToken})
-    res.status(200).json({ user })
+    return res.status(200).json(req.user);
   }
+});
 
-})
-router.get('/login/failure', (req, res) => {
-  res.status(401).json({
+router.get("/login/failure", (req, res) => {
+  return res.status(401).json({
     success: false,
-    message: "failure"
-  })
-})
+    message: "failure",
+  });
+});
 
-router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
   req.logout();
-  res.redirect('https://sprightly-melba-edee81.netlify.app')
-})
+  res.redirect(process.env.LOGOUT_REDIRECT_URL);
+});
 
-router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
-
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
 
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: 'https://sprightly-melba-edee81.netlify.app',
-    failureRedirect: '/login/failure'
+    successRedirect: process.env.LOGOUT_REDIRECT_URL,
+    failureRedirect: "/login/failure",
   })
 );
 
-
-
-module.exports = router
+module.exports = router;
